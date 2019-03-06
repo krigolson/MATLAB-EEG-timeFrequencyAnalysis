@@ -18,7 +18,7 @@ clc;
 [EEG] = doFilter(EEG,0.1,100,60,2,500);
 
 % epoch the data
-[EEG] = doEpochData(EEG,{'S202','S203'},[-500 1500]);
+[EEG] = doEpochData(EEG,{'S202','S203'},[-1000 1000]);
 
 % implement a baseline correction
 [EEG] = doBaseline(EEG,[-200,0]);

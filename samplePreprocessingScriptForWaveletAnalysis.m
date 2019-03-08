@@ -5,20 +5,14 @@ clc;
 % load a data set for analysis into EEGLAB format
 [EEG] = doLoadBVData('Cognitive_Assessment_01.vhdr');
 
-% not needed but here for demonstration purposes
-%[EEG] = doRemoveChannels(EEG,{},EEG.chanlocs);
-
-% not needed but here for demonstration purposes
-%[EEG] = doInterpolate(EEG,EEG.chanlocs,'spherical');
-
 % rereference the data
 [EEG] = doRereference(EEG,{'TP9','TP10'},EEG.chanlocs);
 
 % filter the data, note the higher top end to get at high gamma range
-[EEG] = doFilter(EEG,0.1,100,60,2,500);
+[EEG] = doFilter(EEG,0.1,30,60,2,500);
 
 % epoch the data
-[EEG] = doEpochData(EEG,{'S202','S203'},[-500 1502]);
+[EEG] = doEpochData(EEG,{'S202','S203'},[-500 1000]);
 
 % implement a baseline correction
 [EEG] = doBaseline(EEG,[-200,0]);
@@ -33,7 +27,7 @@ clc;
 [EEG] = doRemoveEpochs(EEG,EEG.artifactPresent);
 
 % run the FFT transform on each condition
-[WAV] = doWAV(EEG,{'S202','S203'},[-500 -300],1,30,60,6);
+[WAV] = doWAV(EEG,{'S202','S203'},[-500 -300],1,30,30,20);
 
 % plot the Wavelets for both conditions side by size for channel 52
 condition1WaveletData = squeeze(WAV.data(52,:,:,1));

@@ -48,7 +48,7 @@ for channelCounter = 1:size(data,1)
     % concatenate all the trials to help with edge artifacts (maybe?) and improve
     % processing speed (how much?)
     alldata = [];
-    alldata = reshape(data(channelCounter,:,:) ,1,[]);
+    alldata = reshape(data(channelCounter,:,:),1,[]);
     
     % run the FFT on the EEG data, use nConv, adds in zero padding as
     dataX   = fft(alldata,nConv);

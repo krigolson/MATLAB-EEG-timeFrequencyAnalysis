@@ -5,8 +5,11 @@ function WAV = doWAV(inputData,markers,baselineWindow,minimumFrequency,maximumFr
     
     disp('Starting Wavelet analysis...');
     
-    baselinePoints(1) = find(inputData.times == baselineWindow(1));
-    baselinePoints(2) = find(inputData.times == baselineWindow(2));
+    x = find(inputData.times >= baselineWindow(1));
+    y = find(inputData.times >= baselineWindow(2));
+    
+    baselinePoints(1) = x(1);
+    baselinePoints(2) = y(1);
     
     numberOfConditions = size(markers,2);
     numberOfEpochs = size(inputData.data,3);

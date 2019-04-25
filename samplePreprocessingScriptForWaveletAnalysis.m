@@ -27,7 +27,7 @@ clc;
 [EEG] = doRemoveEpochs(EEG,EEG.artifactPresent);
 
 % run the FFT transform on each condition
-[WAV] = doWAV(EEG,{'S202','S203'},[-500 -300],1,30,30,20);
+[WAV] = doWAV(EEG,{'S202','S203'},[-500 -300],1,30,30,7);
 
 % plot the Wavelets for both conditions side by size for channel 52
 condition1WaveletData = squeeze(WAV.data(52,:,:,1));

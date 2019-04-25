@@ -44,7 +44,7 @@ function [fftResults,frequencies] = doFourier(data,srate)
     fftOutput(:,1,:) = [];
 
     % Compute the average FFT output for this condition
-    fftResults = squeeze(mean(fftOutput,3));
+    fftResults = squeeze(nanmean(fftOutput,3));
 
     % create a frequency bin
     frequencies = frequencyResolution:frequencyResolution:length(fftOutput)*frequencyResolution;

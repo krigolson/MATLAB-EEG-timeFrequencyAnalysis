@@ -13,7 +13,7 @@ function FFT = doFFT(inputData,markers)
         
         for epochCounter = 1:numberOfEpochs
     
-            if strcmp(markers(conditionCounter),inputData.event(epochCounter).type)
+            if strcmp(markers(conditionCounter),inputData.epoch(epochCounter).eventtype)
             
                 tempData(:,:,tempDataCounter) = inputData.data(:,:,epochCounter);
                 tempDataCounter = tempDataCounter + 1;

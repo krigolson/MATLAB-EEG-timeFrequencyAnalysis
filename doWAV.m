@@ -21,7 +21,7 @@ function WAV = doWAV(inputData,markers,baselineWindow,minimumFrequency,maximumFr
         
         for epochCounter = 1:numberOfEpochs
     
-            if strcmp(markers(conditionCounter),inputData.event(epochCounter).type)
+            if strcmp(markers(conditionCounter),inputData.epoch(epochCounter).eventtype)
             
                 tempData(:,:,tempDataCounter) = inputData.data(:,:,epochCounter);
                 tempDataCounter = tempDataCounter + 1;

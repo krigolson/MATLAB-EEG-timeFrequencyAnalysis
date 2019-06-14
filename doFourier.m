@@ -47,6 +47,6 @@ function [fftResults,frequencies] = doFourier(data,srate)
     fftResults = squeeze(nanmean(fftOutput,3));
 
     % create a frequency bin
-    frequencies = frequencyResolution:frequencyResolution:length(fftOutput)*frequencyResolution;
+    frequencies = frequencyResolution:frequencyResolution:size(fftOutput,2)*frequencyResolution;
 
 end

@@ -22,9 +22,15 @@ function FFT = doFFT(inputData,markers)
             
         end
         
-        [FFTResults FFTFrequencies] = doFourier(tempData,inputData.srate);
-        
-        FFT.data(:,:,conditionCounter) = FFTResults;
+        if isempty(tempData)
+            ERP.data(:,:,conditionCounter) = NaN(size(inputData.data,1),size(inputData.data,2));
+            FFT.data(:,:,conditionCounter) = NaN(size(inputData.data,1),(size(inputData.data,2)/2)-1);
+            FFTFrequencies = 1:(size(inputData.data,2)/2)-1;
+        else
+            [FFTResults FFTFrequencies] = doFourier(tempData,inputData.srate);
+            FFT.data(:,:,conditionCounter) = FFTResults;
+        end
+
         FFT.epochCount(conditionCounter) = tempDataCounter - 1;
         
     end

@@ -1,4 +1,4 @@
-function WAV = doWAV(EEG,markers,baselineWindow,minimumFrequency,maximumFrequency,frequencySteps,mortletParameter)
+function WAV = doWAV(inputData,markers,baselineWindow,minimumFrequency,maximumFrequency,frequencySteps,mortletParameter)
 
     % written as a shell by Olav Krigolson
     % runs FFT analysis byu conditions on EEG data structure
@@ -6,14 +6,14 @@ function WAV = doWAV(EEG,markers,baselineWindow,minimumFrequency,maximumFrequenc
     disp('Starting Wavelet analysis...');
     
     if ~isempty(baselineWindow)
-        x = find(EEG.times >= baselineWindow(1));
-        y = find(EEG.times >= baselineWindow(2));
+        x = find(inputData.times >= baselineWindow(1));
+        y = find(inputData.times >= baselineWindow(2));
         baselinePoints(1) = x(1);
         baselinePoints(2) = y(1);
     end
     
     numberOfConditions = size(markers,2);
-    numberOfEpochs = size(EEG.data,3);
+    numberOfEpochs = size(inputData.data,3);
     
     for conditionCounter = 1:numberOfConditions
         
@@ -22,9 +22,9 @@ function WAV = doWAV(EEG,markers,baselineWindow,minimumFrequency,maximumFrequenc
         
         for epochCounter = 1:numberOfEpochs
     
-            if strcmp(markers(conditionCounter),EEG.epoch(epochCounter).eventtype)
+            if strcmp(markers(conditionCounter),inputData.epoch(epochCounter).eventtype)
             
-                tempData(:,:,tempDataCounter) = EEG.data(:,:,epochCounter);
+                tempData(:,:,tempDataCounter) = inputData.data(:,:,epochCounter);
                 tempDataCounter = tempDataCounter + 1;
                 
             end
@@ -32,9 +32,17 @@ function WAV = doWAV(EEG,markers,baselineWindow,minimumFrequency,maximumFrequenc
         end
         
         if ~isempty(baselineWindow)
-            [waveletData,waveletDataPercent,WAVFrequencies] = doWavelet(tempData,EEG.times,baselinePoints,minimumFrequency,maximumFrequency,frequencySteps,mortletParameter,EEG.srate);
+            [waveletData,waveletDataPercent,WAVFrequencies] = doWavelet(tempData,inputData.times,baselinePoints,minimumFrequency,maximumFrequency,frequencySteps,mortletParameter,inputData.srate);
         else
-            [waveletData,waveletDataPercent,WAVFrequencies] = doWavelet(tempData,EEG.times,[],minimumFrequency,maximumFrequency,frequencySteps,mortletParameter,EEG.srate);
+            if isempty(tempData)
+                waveletData = NaN(size(inputData.data,1),frequencySteps,size(inputData.data,2));
+                waveletDataPercent = NaN(size(inputData.data,1),frequencySteps,size(inputData.data,2));
+                WAVFrequencies = linspace(minimumFrequency,maximumFrequency,frequencySteps);
+            else
+                ERP.data(:,:,conditionCounter) = nanmean(tempData,3);
+                [waveletData,waveletDataPercent,WAVFrequencies] = doWavelet(tempData,inputData.times,[],minimumFrequency,maximumFrequency,frequencySteps,mortletParameter,inputData.srate);
+                
+            end
         end
         WAV.data(:,:,:,conditionCounter) = waveletData;
         WAV.percent(:,:,:,conditionCounter) = waveletDataPercent;
@@ -44,11 +52,11 @@ function WAV = doWAV(EEG,markers,baselineWindow,minimumFrequency,maximumFrequenc
     
     WAV.frequencies = WAVFrequencies;
     WAV.totalEpochs = numberOfEpochs;
-    WAV.chanlocs = EEG.chanlocs;
-    WAV.srate = EEG.srate;
-    WAV.epochTime(1) = EEG.xmin;
-    WAV.epochTime(2) = EEG.xmax;
-    WAV.times = EEG.times;
+    WAV.chanlocs = inputData.chanlocs;
+    WAV.srate = inputData.srate;
+    WAV.epochTime(1) = inputData.xmin;
+    WAV.epochTime(2) = inputData.xmax;
+    WAV.times = inputData.times;
     if ~isempty(baselineWindow)
         WAV.baseline = baselineWindow;
     else

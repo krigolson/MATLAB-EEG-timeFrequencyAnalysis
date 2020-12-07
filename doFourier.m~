@@ -31,13 +31,10 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
     pnts = size(data,2);
     
     % check for optional parameters
-    doIng = 0;
-    doDeMean = 0;
-    uBound = 0;
-    if ~isempty(varargin)
+    if length(varargin) > 0
         doIng = varargin{1};
         doDeMean = varargin{2};
-        uBound = varargin{3};
+        uBound = varargin{3}
     end
     
     % demean the data if flagged
@@ -67,9 +64,9 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
 
     % we want to remove the negative half of the fft output because it is redundant
     if ndims(power) == 3
-        power = power(:,1:round(pnts/2),:);
+        power = power(:,1:pnts/2,:);
     else
-        power = power(:,1:round(pnts/2)); % if 2D data is passed
+        power = power(:,1:pnts/2); % if 2D data is passed
     end
 
     % you take abs of the output of the fft because you want the resultant of the real and imaginary output
@@ -92,17 +89,18 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
     
     % remove phase negative half and DC offset
     if ndims(phase) == 3
-        phase = phase(:,1:round(pnts/2),:);
+        phase = phase(:,1:pnts/2,:);
         phase(:,1,:) = []; % remove phase for DC offset
     else
-        phase = phase(:,1:round(pnts/2)); % if 2D data is passed
+        phase = phase(:,1:pnts/2); % if 2D data is passed
         phase(:,1) = [];
     end
 
     % Compute the average FFT output if passes three dimenionsal data
     if ndims(data) == 3
-        power = squeeze(nanmean(power,3));
-        phase = squeeze(nanmean(phase,3));
+        fftResults = squeeze(nanmean(power,3));
+    else
+        fftResults = power;
     end
 
     % determine frequency resolution
@@ -110,17 +108,5 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
     
     % create a frequency bin
     frequencies = frequencyResolution:frequencyResolution:size(power,2)*frequencyResolution;
-    
-    if uBound > 0
-        if uBound < max(frequencies)
-            uBoundF = find(frequencies >= uBound,1)
-        else
-            [~, uBoundF] = max(frequencies);
-        end
-        uBoundF = round(uBoundF);
-        power = power(:,1:uBoundF);
-        phase = phase(:,1:uBoundF);
-        frequencies = frequencies(1:uBoundF);
-    end
-        
+
 end

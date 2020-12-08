@@ -22,7 +22,7 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
     
     % added some varargin to allow for hamming, hanning, demean, and
     % upperbound, set the first varargin to 0 for no tapered window, to 1
-    % for a hamming window, and to 2 for a hanning window. Set the second
+    % for a hanning window, and to 2 for a hamming window. Set the second
     % varargin to 1 to demean the data or 0 to not do this. Finally, the
     % last varargin specifies the frequecy to chop the data at for cleanup
     % purposes.
@@ -47,14 +47,14 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
             
     % apply a hanning or hamming window if flagged
     if doIng == 1
-        hWindow = hamming(size(Data,2))';
+        hWindow = hanning(size(data,2))';
         data = data .* hWindow;
     end
     if doIng == 2
-        hWindow = hanning(size(Data,2))';
+        hWindow = hamming(size(data,2))';
         data = data .* hWindow;
     end
-    
+
     % run the fft
     fftOutput = fft(data,[],2);
     
@@ -113,7 +113,7 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
     
     if uBound > 0
         if uBound < max(frequencies)
-            uBoundF = find(frequencies >= uBound,1)
+            uBoundF = find(frequencies >= uBound,1);
         else
             [~, uBoundF] = max(frequencies);
         end

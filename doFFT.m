@@ -27,7 +27,7 @@ function FFT = doFFT(inputData,markers)
             FFT.data(:,:,conditionCounter) = NaN(size(inputData.data,1),(size(inputData.data,2)/2)-1);
             FFTFrequencies = 1:(size(inputData.data,2)/2)-1;
         else
-            [FFTResults FFTFrequencies] = doFourier(tempData,inputData.srate);
+            [FFTResults FFTPower FFTFrequencies] = doFourier(tempData,inputData.srate);
             FFT.data(:,:,conditionCounter) = FFTResults;
         end
 

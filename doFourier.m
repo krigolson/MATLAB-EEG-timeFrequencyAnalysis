@@ -1,4 +1,4 @@
-function [power,phase,frequencies] = doFourier(data,srate,varargin)
+function [power,trialPower,phase,trialPhase,frequencies] = doFourier(data,srate,varargin)
     
     %   doFFT run a fft on EEG data
     %   based on code by Michael X. Cohen
@@ -99,9 +99,11 @@ function [power,phase,frequencies] = doFourier(data,srate,varargin)
         phase(:,1) = [];
     end
 
-    % Compute the average FFT output if passes three dimenionsal data
+    % Compute the average FFT output if passed three dimenionsal data
     if ndims(data) == 3
+        trialPower = power;
         power = squeeze(nanmean(power,3));
+        trialPhase = phase;
         phase = squeeze(nanmean(phase,3));
     end
 

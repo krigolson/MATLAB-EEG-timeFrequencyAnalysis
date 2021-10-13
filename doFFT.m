@@ -27,8 +27,11 @@ function FFT = doFFT(inputData,markers)
             FFT.data(:,:,conditionCounter) = NaN(size(inputData.data,1),(size(inputData.data,2)/2)-1);
             FFTFrequencies = 1:(size(inputData.data,2)/2)-1;
         else
-            [FFTResults FFTPower FFTFrequencies] = doFourier(tempData,inputData.srate);
+            [FFTResults, trialPower, FFTPower,  trialPhase, FFTFrequencies] = doFourier(tempData,inputData.srate);
             FFT.data(:,:,conditionCounter) = FFTResults;
+            FFT.phase(:,:,conditionCounter) = FFTPower;
+            FFT.trialPower(:,:,:,conditionCounter) = trialPower;
+            FFT.trialPhase(:,:,:,conditionCounter) = trialPhase;
         end
 
         FFT.epochCount(conditionCounter) = tempDataCounter - 1;
@@ -42,6 +45,7 @@ function FFT = doFFT(inputData,markers)
     FFT.epochTime(1) = inputData.xmin;
     FFT.epochTime(2) = inputData.xmax;
     FFT.times = inputData.times;
+
     
     disp('FFTs have now been created...');
     

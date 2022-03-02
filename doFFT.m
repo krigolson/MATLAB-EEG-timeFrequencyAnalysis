@@ -45,7 +45,6 @@ function FFT = doFFT(inputData,markers)
     FFT.epochTime(1) = inputData.xmin;
     FFT.epochTime(2) = inputData.xmax;
     FFT.times = inputData.times;
-
     
     disp('FFTs have now been created...');
     

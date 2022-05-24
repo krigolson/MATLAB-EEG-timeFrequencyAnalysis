@@ -41,7 +41,7 @@ nWave = length(wavtime);
 nData = size(data,2) * size(data,3);
 
 % this is the length of the convolution, data plus size of wavelet
-nConv = nWave + nData - 1
+nConv = nWave + nData - 1;
 
 % cycle through the channels
 for channelCounter = 1:size(data,1)
@@ -84,10 +84,8 @@ for channelCounter = 1:size(data,1)
         % and reshape back to time X trials
         as = reshape( as, size(data,2), size(data,3) );
         
-        size(as)
-        
         % compute power and average over trials
-        tf(fi,:) = mean( abs(as).^2 ,2);
+        tf(fi,:) = mean(abs(as).^2 ,2);
     end
     
     % create new matrix for percent change

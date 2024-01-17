@@ -105,6 +105,9 @@ function [power,trialPower,phase,trialPhase,frequencies] = doFourier(data,srate,
         power = squeeze(nanmean(power,3));
         trialPhase = phase;
         phase = squeeze(nanmean(phase,3));
+    else
+        trialPower = [];
+        trialPhase = [];
     end
 
     % determine frequency resolution

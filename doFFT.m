@@ -30,8 +30,10 @@ function FFT = doFFT(inputData,markers)
             [FFTResults, trialPower, FFTPower,  trialPhase, FFTFrequencies] = doFourier(tempData,inputData.srate);
             FFT.data(:,:,conditionCounter) = FFTResults;
             FFT.phase(:,:,conditionCounter) = FFTPower;
-            %FFT.trialPower(:,:,:,conditionCounter) = trialPower;
-            %FFT.trialPhase(:,:,:,conditionCounter) = trialPhase;
+            if numberOfConditions == 1
+                FFT.trialPower(:,:,:,conditionCounter) = trialPower;
+                FFT.trialPhase(:,:,:,conditionCounter) = trialPhase;
+            end
         end
 
         FFT.epochCount(conditionCounter) = tempDataCounter - 1;

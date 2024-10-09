@@ -30,8 +30,8 @@ function [power,trialPower,phase,trialPhase,frequencies] = doFourier(data,srate,
     % determine how many data points are in the analysis
     pnts = size(data,2);
     
-    % check for optional parameters
-    doIng = 0;
+    % check for optional parameters, apply a Hanning Window by default
+    doIng = 1;
     doDeMean = 0;
     uBound = 0;
     if ~isempty(varargin)

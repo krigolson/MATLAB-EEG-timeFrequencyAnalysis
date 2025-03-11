@@ -1,7 +1,7 @@
 function FFT = doFFT(inputData,markers,flag)
 
     % written as a shell by Olav Krigolson
-    % runs FFT analysis byu conditions on EEG data structure
+    % runs FFT analysis by conditions on EEG data structure
     
     numberOfConditions = size(markers,2);
     numberOfEpochs = size(inputData.data,3);
@@ -77,7 +77,6 @@ function FFT = doFFT(inputData,markers,flag)
 
     end
 
-    
     FFT.frequencies = FFTFrequencies;
     FFT.totalEpochs = numberOfEpochs;
     FFT.chanlocs = inputData.chanlocs;

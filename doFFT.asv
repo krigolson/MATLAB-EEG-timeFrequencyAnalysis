@@ -79,7 +79,7 @@ function FFT = doFFT(inputData,markers,flag)
 
     FFT.conditions = numberOfConditions;
     FFT.markers = markers;
-    FFT.epochs = numberOfEpochs;
+    
     FFT.frequencies = FFTFrequencies;
     FFT.totalEpochs = numberOfEpochs;
     FFT.chanlocs = inputData.chanlocs;

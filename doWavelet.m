@@ -37,18 +37,32 @@ half_wave = (length(wavtime)-1)/2;
 % length of the wavelet
 nWave = length(wavtime);
 
+% mirror padding: each trial is extended at both ends with a reflection of
+% itself before the trials are concatenated, and the padding is cut off
+% again after the convolution. Without it the wavelet at the end of one
+% trial overlaps the start of the next, which leaks power across the epoch
+% edges (and into the baseline when the baseline is at the start).
+nTime = size(data,2);
+nTrials = size(data,3);
+nPad = nTime - 1;                          % the longest reflection one trial allows
+leftPadIndex = nPad+1:-1:2;                % reflection about the first sample
+rightPadIndex = nTime-1:-1:nTime-nPad;     % reflection about the last sample
+nPadded = nTime + 2*nPad;                  % length of one padded trial
+keepIndex = nPad+1:nPad+nTime;             % the real data within a padded trial
+
 % length of data in the analysis when it is concatenated
-nData = size(data,2) * size(data,3);
+nData = nPadded * nTrials;
 
 % this is the length of the convolution, data plus size of wavelet
 nConv = nWave + nData - 1;
 
 % cycle through the channels
 for channelCounter = 1:size(data,1)
-    % concatenate all the trials to help with edge artifacts (maybe?) and improve
-    % processing speed (how much?)
-    alldata = [];
-    alldata = reshape(data(channelCounter,:,:),1,[]);
+    % mirror pad each trial, then concatenate all the trials so the
+    % convolution is done in one step (faster than trial by trial)
+    channelData = data(channelCounter,:,:);
+    paddedData = cat(2,channelData(1,leftPadIndex,:),channelData,channelData(1,rightPadIndex,:));
+    alldata = reshape(paddedData,1,[]);
     
     % run the FFT on the EEG data, use nConv, adds in zero padding as
     dataX   = fft(alldata,nConv);
@@ -81,8 +95,9 @@ for channelCounter = 1:size(data,1)
         % bits that were zero padded in the first place
         as = as(half_wave+1:end-half_wave);
         
-        % and reshape back to time X trials
-        as = reshape( as, size(data,2), size(data,3) );
+        % reshape back to padded time X trials, then drop the mirror padding
+        as = reshape( as, nPadded, nTrials );
+        as = as(keepIndex,:);
         
         % compute power and average over trials
         tf(fi,:) = mean(abs(as).^2 ,2);

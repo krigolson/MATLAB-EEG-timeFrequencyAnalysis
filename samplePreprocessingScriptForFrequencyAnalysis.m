@@ -12,7 +12,7 @@ clc;
 %[EEG] = doInterpolate(EEG,EEG.chanlocs,'spherical');
 
 % rereference the data
-[EEG] = doRereference(EEG,{'TP9','TP10'},EEG.chanlocs);
+[EEG] = doRereference(EEG,{'TP9','TP10'});
 
 % filter the data, note the higher top end to get at high gamma range
 [EEG] = doFilter(EEG,1,30,60,2,500);

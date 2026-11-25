@@ -6,7 +6,7 @@ clc;
 [EEG] = doLoadBVData('/Users/krigolson/Documents/GitHub/MATLAB-EEG-sampleData','Cognitive_Assessment_01.vhdr');
 
 % rereference the data
-[EEG] = doRereference(EEG,{'TP9','TP10'},{'ALL'});
+[EEG] = doRereference(EEG,{'TP9','TP10'});
 
 filterParameters.low = 0.1;
 filterParameters.high = 30;

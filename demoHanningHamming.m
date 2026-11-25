@@ -8,7 +8,7 @@ clc;
 
 load('sampleData');
 
-EEG = doFilter(EEG,struct('low',0.1,'high',30,'notch',60));
+EEG = doFilter(EEG,struct('low',0.5,'high',30,'notch',60));
 
 SEEG = doSegmentData(EEG,{'S202','S203'},[-200 798]);
 

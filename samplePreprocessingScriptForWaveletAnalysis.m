@@ -8,7 +8,7 @@ clc;
 % rereference the data
 [EEG] = doRereference(EEG,{'TP9','TP10'});
 
-filterParameters.low = 0.1;
+filterParameters.low = 0.5;
 filterParameters.high = 30;
 filterParameters.notch = 60;
 

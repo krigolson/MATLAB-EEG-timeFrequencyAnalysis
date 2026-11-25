@@ -15,7 +15,7 @@ x2 = 500;
 
 f = figure
 
-EEG = doFilter(EEG,struct('low',0.1,'high',100,'notch',60));
+EEG = doFilter(EEG,struct('low',0.5,'high',100,'notch',60));
 
 yLimit = 40;
 

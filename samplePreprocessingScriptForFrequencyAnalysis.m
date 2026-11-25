@@ -15,7 +15,7 @@ clc;
 [EEG] = doRereference(EEG,{'TP9','TP10'});
 
 % filter the data, note the higher top end to get at high gamma range
-[EEG] = doFilter(EEG,struct('low',1,'high',30,'notch',60));
+[EEG] = doFilter(EEG,struct('low',0.5,'high',30,'notch',60));
 
 % epoch the data
 [EEG] = doEpochData(EEG,{'S202','S203'},[-200 800]);
